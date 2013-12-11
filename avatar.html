@@ -1,0 +1,80 @@
+<!--
+	Copyright (C) 2011 Nitin Pathak (www.popofibo.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html>
+<head>
+<title>United Portals - Portals' own work-share</title>
+<link rel="stylesheet" type="text/css" href="/static/main.css" />
+<script src="/static/myportals.js" type="text/javascript"></script>
+</head>
+{% if user %}
+ </head>
+	<body bgcolor="#171818" text="#969797" link="#FF9933" vlink="#FF9933" alink="#ff9933" class="style4">
+<p align='right'><b>Welcome {{ user.nickname }}</b> | <a href="{{ url }}">{{ url_linktext }}</a></p>
+
+<div align="center"><img src="/static/myavatar.jpg">
+
+</div>
+
+{% include "leftnav.html" %}
+
+<p>
+Welcome to 'Your Avatar' section of the portal! Please upload your image and this would be associated with all your postings on this portals. Please use your genuine image and refrain from any content of profanity.
+</p>
+<table cellpadding="0" cellspacing="40" border="0" class="style4" align="left">
+<tr>
+<td>
+
+	{% if myimage %}
+		{% for image in myimage %}
+			{% ifequal user image.member %}	
+				{% if image.avatar %}
+				<div><img src='img?img_id={{ image.key|escape }}' border="1"></img>
+
+				{% else %}
+				<div><img src="/static/noimage.jpg"/>
+				<div class="style3"><p>The image uploaded is either corrupt or not an image at all. Please upload the image in the correct format.</p></div>
+				{% endif %}
+			{% else %}
+			<div><img src="/static/noimage.jpg"/>
+			{% endifequal %}
+		{% endfor %}
+	{% else %}
+	<div><img src="/static/noimage.jpg"/><div class="style2"><p>You have not yet chosen your avatar. Please upload the image in the correct format.</p></div>
+
+	{% endif %}
+
+	<form action="/upload" enctype="multipart/form-data" method="post">
+			<div><label>Pick Your Avatar:</label></div>
+			<div><input type="file" class="style1" name="img"/></div></br>
+			<div><input type="image" src="/static/upload.jpg" alt="Upload"/></div>
+		</form>
+
+</td>
+</tr>
+</table>
+
+{% else %}
+<META 
+http-equiv="refresh" 
+content="2;URL='/'">
+ </head>
+
+	<body bgcolor="#171818" text="#969797" link="#ff9933" vlink="#ff9933" alink="#ff9933" class="style4">
+		<strong>Please login....</strong>
+{% endif %}
+</body>
+</html>

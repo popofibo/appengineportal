@@ -1,0 +1,160 @@
+<!--
+	Copyright (C) 2011 Nitin Pathak (www.popofibo.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html>
+<head>
+<title>United Portals - Portals' own work-share</title>
+<link rel="stylesheet" type="text/css" href="/static/main.css" />
+<script src="/static/myportals.js" type="text/javascript"></script>
+</head>
+{% if user %}
+ </head>
+	<body bgcolor="#171818" text="#969797" link="#FF9933" vlink="#FF9933" alink="#ff9933" class="style4">
+<p align='right'><b>Welcome {{ user.nickname }}</b> | <a href="{{ url }}">{{ url_linktext }}</a></p>
+
+<div align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/static/taskassign.jpg">
+
+</div>
+
+{% include "leftnav.html" %}
+
+</br>
+</br>
+<p>
+Welcome {{ user.nickname }} to the 'Task Assignment' section of the portal! Please select the person whom you want to assign the task and enter the task to be performed. Select the date by which you would expect the task to be completed. The selected person would mark the task complete as and when it is complete.
+</p>
+</br>
+<table cellpadding="0" cellspacing="0" border="0" class="style4" align="center">
+<tr>
+<td>
+{% if myassigns %}
+<div class="style2"><center>Tasks assigned by me:</center></div>
+{% endif %}
+</br>
+<table cellpadding="0" cellspacing="25" border="0" class="style4" align="left">
+{% if myassigns %}
+<tr class="style5" align="center">
+	<td>Status</td>
+	<td>Assigned to</td>
+	<td>Task</td>
+	<td>Date for completion</td>
+	<td>Date of completion</td>
+</tr>
+{% endif %}
+{% for myassign in myassigns  %}
+<tr align="center">
+	{% if myassign.iscomplete %}
+	<td>
+	<img src="static/status_green.jpg" alt="Green"/>
+	{% else %}
+	<td>
+	<img src="static/status_red.jpg" alt="Red"/>
+	{% endif %}
+	</td>
+	<td>
+	{{ myassign.employee }}
+	</td>
+	<td align="left">
+	{{ myassign.task|escape }}
+	</td>
+	<td>
+	{{ myassign.tobedate }}
+	</td>
+	<td>
+	{% if myassign.completedate %}
+	{{ myassign.completedate }}
+	{% else %}
+	--
+	{% endif %}
+	</td>
+</tr>
+{% endfor %}
+</table>
+</tr>
+</td>
+
+<tr>
+<td>
+
+<form action="/assign" enctype="multipart/form-data" method="post">
+
+<table cellpadding="0" cellspacing="0" border="0" class="style4" align="center">
+</br>
+<div class="style2"><center>Assign new tasks:</center></div>
+<tr>
+	<td>
+		
+			<div><img src="/static/select_employee.jpg" alt="Select the employee"/>
+	
+			<select name="users" class="style1">
+			{% for employee in employees %}
+			<option value="{{ employee }}">{{ employee }}</option>
+			{% endfor %}
+			</select>
+			</div>
+			</br>
+			</br>
+	</td>
+</tr>
+<tr>
+	<td colspan="1">
+
+			<div><textarea name="task" rows="4" cols="50" onFocus="if(this.value=='Please type in the assignment here!')value='';" onBlur="if(this.value=='')this.value='Please type in the assignment here!';" class="style1">Please type in the assignment here!</textarea></div>
+			</br>
+			</br>
+
+	</td>
+<tr>
+	<td>
+		<img src="/static/pick_date.jpg" alt="Pick the Date"/>
+	
+		<input name="tobedate" class="style1">
+	
+		<img src="/static/date.jpg" onclick="displayDatePicker('tobedate');" alt="Date"/>
+	</td>
+</tr>
+			
+<tr>
+	<td align="left">
+		</br>
+		</br>
+		<div><input type="image" src="/static/assign.jpg" alt="Assign"/></div>
+	</td>
+
+</br>
+</br>
+	
+
+</td>
+</tr>
+</table>
+
+</form>
+</td>
+</tr>
+
+</table>
+{% else %}
+<META 
+http-equiv="refresh" 
+content="2;URL='/'">
+ </head>
+
+	<body bgcolor="#171818" text="#969797" link="#ff9933" vlink="#ff9933" alink="#ff9933" class="style4">
+		<strong>Please login....</strong>
+{% endif %}
+</body>
+</html>

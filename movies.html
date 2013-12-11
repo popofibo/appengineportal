@@ -1,0 +1,125 @@
+<!--
+	Copyright (C) 2011 Nitin Pathak (www.popofibo.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html>
+<head>
+<title>United Portals - Portals' own work-share</title>
+<link rel="stylesheet" type="text/css" href="/static/main.css" />
+<script src="/static/myportals.js" type="text/javascript"></script>
+</head>
+{% if user %}
+ </head>
+	<body bgcolor="#171818" text="#969797" link="#FF9933" vlink="#FF9933" alink="#ff9933" class="style4">
+<p align='right'><b>Welcome {{ user.nickname }}</b> | <a href="{{ url }}">{{ url_linktext }}</a></p>
+
+<div align="center"><img src="/static/movie.jpg">
+
+</div>
+
+{% include "leftnav.html" %}
+
+<table><tr><td>
+<table cellpadding="0" cellspacing="20" border="0" class="style4" align="left">
+<tr>
+  <td width="25%"><p><img src="/static/movie_month.jpg" align="left" border="1" alt="Movie of the month"/>The most awaited movie of the summers has finally hit the silver screen, and what a reception! Boasting of the highest ever weekend gross in the history, audience have arguably accepted the pre-oscar talks of Heath Ledger's (R.I.P.) Oscar nomination. Though there we dubious claims of the Oscar talks being mainly based on the post-demise of Heath, movie pundits have no second thoughts on Heath's astonishing performance portraying the very own; in-your-face fiend - The Joker.
+<p>
+As per the latest superhero movie trends, the emotional side and the humane perspective wraps the high-energy super lashes and fights; picturized with the gigantic IMAX cameras.
+</p>
+<p>The latest superhero perspective has been very well received by the audiences across the globe; with the cash flow in access of $158 Mils over the weekend bears the testimony. The Dark Knight (TDK), when comapred to the other comic-adaptation scores definitely more than cent percent on every scale; most important being, in my opinion, the casting.
+</p>
+</p>
+<p>As per the latest review on IMDB:</p>
+<em>
+<p class="style2">"All the hailing of Ledger's performance are grounded. Watching it will make you feel a different chill down your spine than you'd remember from any other film. It's impossible, quite literally to relate to The Joker. He gets inside your head with his stories of how he got his scars, makes you laugh at his sick jokes, then makes you instantly wonder why you're laughing."</p>
+</em>
+<p>
+To get more information, <a href="http://www.imdb.com/title/tt0468569/" target="_blank">Click Here</a> to direct to IMDB for the detailed analysis.
+</p>
+Share your views and opinions about your weekend flicks!
+</td>
+</tr>
+</table>
+</td></tr>
+</table>	
+
+<table cellpadding="0" cellspacing="20" border="0" class="style4" align="left">
+<tr>
+<td>
+
+		<form action="/mymovie" enctype="multipart/form-data" method="post">
+			<div><textarea name="content" rows="5" cols="70" onFocus="if(this.value=='Please enter your text here!')value='';" onBlur="if(this.value=='')this.value='Please enter your text here!';" class="style1">Please enter your text here!</textarea></div>
+</br>
+			<div><input type="image" src="/static/myview.jpg" alt="My View"/></div>
+		</form>
+</br>
+</br>
+		
+		{% for mymovie in mymovies %}
+		<p><table cellpadding="0" cellspacing="10" border="0" class="style4" width="100%">
+			<tr><script>var ctr = 0;</script>
+				<td rowspan="2" width="28%" align="right">
+				{% for myavatar in myavatars %}
+					{% ifequal myavatar.member mymovie.author %}
+						{% if myavatar.avatar %}
+						<script>
+						if (ctr==0){
+						document.write('<div><img src="img?img_id={{ myavatar.key|escape }}" align="left"></img></div>');
+						ctr=2;
+						}
+						</script>
+						{% endif %}
+					{% endifequal %}
+				{% endfor %}
+				<script>
+				if (ctr==0){
+				document.write('<div><img src="/static/noimage.jpg" align="left"/></div>');
+				}
+				</script>
+				
+				</td>
+				<td bgcolor="#660C00">
+				{% if mymovie.author %}
+					<b>{{ mymovie.author.nickname }}</b> wrote:
+				{% else %}
+					An anonymous person wrote:
+				{% endif %}
+				</td>
+				<td>
+					<tr cellpadding="20">
+						<td class="style5" bgcolor="#993300">
+						{{ mymovie.content|escape }}
+						</td>
+					</tr>
+				</td>
+			</tr>
+		</table>
+		</p>
+		{% endfor %}
+
+</td>
+</tr>
+</table>
+{% else %}
+<META 
+http-equiv="refresh" 
+content="2;URL='/'">
+ </head>
+
+	<body bgcolor="#171818" text="#969797" link="#ff9933" vlink="#ff9933" alink="#ff9933" class="style4">
+		<strong>Please login....</strong>
+{% endif %}
+</body>
+</html>

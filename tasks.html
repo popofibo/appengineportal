@@ -1,0 +1,106 @@
+<!--
+	Copyright (C) 2011 Nitin Pathak (www.popofibo.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html>
+<head>
+<title>United Portals - Portals' own work-share</title>
+<link rel="stylesheet" type="text/css" href="/static/main.css" />
+<script src="/static/myportals.js" type="text/javascript"></script>
+</head>
+{% if user %}
+ </head>
+	<body bgcolor="#171818" text="#969797" link="#FF9933" vlink="#FF9933" alink="#ff9933" class="style4">
+<p align='right'><b>Welcome {{ user.nickname }}</b> | <a href="{{ url }}">{{ url_linktext }}</a></p>
+
+<div align="center"><img src="/static/mytasks.jpg">
+
+</div>
+
+{% include "leftnav.html" %}
+
+</br>
+</br>
+<p>
+Welcome {{ user.nickname }}! Review the tasks assgined to you and update the status. Please select the date of completion of the task and mark the task as complete. The status change is reflected for your 'completed' task.
+</p>
+</br>
+{% if mytasks %}
+<div class="style2"><center>My Tasks:</center></div>
+{% else %}
+<div class="style2"><center>No Tasks!</center></div>
+{% endif %}
+
+<form action="/complete" enctype="multipart/form-data" method="post">
+<table cellpadding="0" cellspacing="25" border="0" class="style4" align="left">
+{% if mytasks %}
+<tr class="style5" align="center">
+	<td>Status</td>
+	<td>Assigned by</td>
+	<td>Task</td>
+	<td>Date for completion</td>
+	<td>Date of completion</td>
+</tr>
+{% endif %}
+{% for mytask in mytasks  %}
+<tr align="center">
+	{% if mytask.iscomplete %}
+	<td>
+	<img src="static/status_green.jpg" alt="Green"/>
+	{% else %}
+	<td>
+	<img src="static/status_red.jpg" alt="Red"/>
+	{% endif %}
+	</td>
+	<td>
+	{{ mytask.assignedby.nickname }}
+	</td>
+	<td align="left">
+	{{ mytask.task|escape }}
+	</td>
+	<td>
+	{{ mytask.tobedate }}
+	</td>
+	<td>
+	{% if mytask.iscomplete %}
+	{{ mytask.completedate }}
+	{% else %}
+	<input name="complete" class="style1"/>
+	<input type="button" value="Date" onclick="displayDatePicker('complete');" alt="Date" class="style8"/>
+	{% endif %}
+	</td>
+	{% if mytask.iscomplete %}
+	{% else %}
+	<td>
+	<input type="hidden" name="key" value="{{ mytask.key }}"/>
+	<input type="image" src="/static/mark_complete.jpg" alt="Mark Complete"/>
+	</td>
+	{% endif %}
+</tr>
+{% endfor %}
+</table>
+</form>
+
+{% else %}
+<META 
+http-equiv="refresh" 
+content="2;URL='/'">
+ </head>
+
+	<body bgcolor="#171818" text="#969797" link="#ff9933" vlink="#ff9933" alink="#ff9933" class="style4">
+		<strong>Please login....</strong>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!--
+	Copyright (C) 2011 Nitin Pathak (www.popofibo.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html>
+<head>
+<title>United Portals - Portals' own work-share</title>
+<link rel="stylesheet" type="text/css" href="/static/main.css" />
+<script src="/static/myportals.js" type="text/javascript"></script>
+</head>
+{% if user %}
+ </head>
+	<body bgcolor="#171818" text="#969797" link="#FF9933" vlink="#FF9933" alink="#ff9933" class="style4">
+<p align='right'><b>Welcome {{ user.nickname }}</b> | <a href="{{ url }}">{{ url_linktext }}</a></p>
+
+<div align="center"><img src="/static/birthdays.jpg">
+
+</div>
+
+{% include "leftnav.html" %}
+
+</br>
+</br>
+{% if myupdate %}
+	<p>
+	Welcome {{ user.nickname }}! Your team members must be 	celebrating their birthdays this month. Check-out who is 	celebrating their special days today and in the days to come.
+	</p>
+{% else %}
+	<p>
+	Welcome {{ user.nickname }}! Please choose your birthday so that 	the date is updated in our records.
+	</p>
+	</br>
+	<form action="/mybday" enctype="multipart/form-data" 	method="post">
+	<img src="/static/month.jpg" alt="Month"/>
+	<select name="month" class="style1">
+		{% for value in months %}
+		<option value="{{ value }}">{{ value }}</option>
+		{% endfor %}
+	</select>
+	<img src="/static/day.jpg" alt="Day"/>
+	<select name="day" class="style1">
+		{% for key in days %}
+		<option value="{{ key }}">{{ key }}</option>
+		{% endfor %}
+	</select>
+	</br>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="image" src="/static/mybday.jpg" alt="My Birthday"/>
+	</p>
+	</form>
+{% endif %}
+
+<table cellpadding="0" cellspacing="40" border="0" class="style4" align="left">
+<tr>
+<td>
+{% if today %}
+<img src="/static/happy_birthday.jpg" alt="Happy Birthday"/>
+{% for birthday in today %}
+		<p><table cellpadding="0" cellspacing="10" border="0" class="style4" width="20%">
+			<tr><script>var ctr = 0;</script>
+				<td width="28%" align="right">
+				{% for myavatar in myavatars %}
+					{% ifequal myavatar.member birthday.member %}
+						{% if myavatar.avatar %}
+						<script>
+						if (ctr==0){
+						document.write('<div><img src="img?img_id={{ myavatar.key|escape }}" align="left"></img></div>');
+						ctr=2;
+						}
+						</script>
+						{% endif %}
+					{% endifequal %}
+				{% endfor %}
+				<script>
+				if (ctr==0){
+				document.write('<div><img src="/static/noimage.jpg" align="left"/></div>');
+				}
+				</script>
+				
+				</td>
+			<tr>
+				<td>
+				{{ birthday.member.nickname }} - <em>{{ birthday.birthmonth }}, {{ birthday.birthday }}</em>
+						
+				</td>
+			</tr>
+			</tr>
+		</table>
+		</p>
+		{% endfor %}
+
+{% else %}
+<p align="center">
+<div class="style2">
+No Birthdays today
+</div>
+{% endif %}
+</p>
+</br>
+</br>
+{% if mybirthdays %}
+		<p>
+		<img src="/static/this_month.jpg" alt="Birthdays this month"/>
+		</p>
+
+		{% for mybirthday in mybirthdays %}
+		<p><table cellpadding="0" cellspacing="10" border="0" class="style4" width="20%">
+			<tr><script>var ctr = 0;</script>
+				<td width="28%" align="right">
+				{% for myavatar in myavatars %}
+					{% ifequal myavatar.member mybirthday.member %}
+						{% if myavatar.avatar %}
+						<script>
+						if (ctr==0){
+						document.write('<div><img src="img?img_id={{ myavatar.key|escape }}" align="left"></img></div>');
+						ctr=2;
+						}
+						</script>
+						{% endif %}
+					{% endifequal %}
+				{% endfor %}
+				<script>
+				if (ctr==0){
+				document.write('<div><img src="/static/noimage.jpg" align="left"/></div>');
+				}
+				</script>
+				
+				</td>
+			<tr>
+				<td>
+				{{ mybirthday.member.nickname }} - <em>{{ mybirthday.birthmonth }}, {{ mybirthday.birthday }}</em>
+						
+				</td>
+			</tr>
+			</tr>
+		</table>
+		</p>
+		{% endfor %}
+{% else %}
+<p>
+<div class="style2">
+No more birthdays this month
+</div>
+{% endif %}
+</tr>
+</td>
+</table>
+{% else %}
+<META 
+http-equiv="refresh" 
+content="2;URL='/'">
+ </head>
+
+	<body bgcolor="#171818" text="#969797" link="#ff9933" vlink="#ff9933" alink="#ff9933" class="style4">
+		<strong>Please login....</strong>
+{% endif %}
+</body>
+</html>
